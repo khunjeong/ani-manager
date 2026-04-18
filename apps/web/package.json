@@ -1,0 +1,27 @@
+{
+  "name": "@ani-manager/web",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@ani-manager/ai-core": "workspace:*",
+    "@ani-manager/content-ingestion": "workspace:*",
+    "@ani-manager/domain": "workspace:*",
+    "next": "^15.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.4",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.12.0",
+    "eslint-config-next": "^15.0.0",
+    "typescript": "^5.6.2"
+  }
+}
