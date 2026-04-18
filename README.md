@@ -11,6 +11,7 @@ AI 애니 취향 매니저를 위한 범용 하네스 엔지니어링 구조입�
 - `packages/content-ingestion`: 시즌 작품 카탈로그 수집/정규화 계층
 - `packages/ai-core`: 취향 프로파일링, 추천 생성, 설명 생성의 오케스트레이션
 - `docs/architecture.md`: 왜 이렇게 분리했는지에 대한 구조 문서
+- `docs/product/*`: 제품 기획, MVP 범위, 로드맵, 기술 방향 문서
 
 ## Why this harness is reusable
 
@@ -34,3 +35,10 @@ pnpm dev
 2. 유저 온보딩 설문과 감상 기록 저장 플로우를 붙입니다.
 3. LLM 태깅 파이프라인을 `@ani-manager/ai-core`에 연결합니다.
 4. 주간 다이제스트와 시청 유지/하차 보조 로직을 배치 잡으로 분리합니다.
+
+## Product docs
+
+- [Product Brief](./docs/product/brief.md)
+- [MVP Spec](./docs/product/mvp-spec.md)
+- [Roadmap](./docs/product/roadmap.md)
+- [Tech Direction](./docs/product/tech-direction.md)
