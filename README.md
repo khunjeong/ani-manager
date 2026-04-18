@@ -12,6 +12,7 @@ AI 애니 취향 매니저를 위한 범용 하네스 엔지니어링 구조입�
 - `packages/ai-core`: 취향 프로파일링, 추천 생성, 설명 생성의 오케스트레이션
 - `docs/architecture.md`: 왜 이렇게 분리했는지에 대한 구조 문서
 - `docs/product/*`: 제품 기획, MVP 범위, 로드맵, 기술 방향 문서
+- `docs/design/*`: UX 구조, 화면 목록, 비주얼 시스템 문서
 
 ## Why this harness is reusable
 
@@ -42,3 +43,6 @@ pnpm dev
 - [MVP Spec](./docs/product/mvp-spec.md)
 - [Roadmap](./docs/product/roadmap.md)
 - [Tech Direction](./docs/product/tech-direction.md)
+- [UX Blueprint](./docs/design/ux-blueprint.md)
+- [Visual System](./docs/design/visual-system.md)
+- [Screen Inventory](./docs/design/screen-inventory.md)
