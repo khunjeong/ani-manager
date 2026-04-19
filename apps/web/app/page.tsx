@@ -25,9 +25,13 @@ export default function HomePage() {
   return (
     <main className="page-shell home-shell">
       <section className="hero hero-editorial">
+        <div className="hero-kanji-rail" aria-hidden="true">
+          <span>放送中</span>
+          <span>新作選</span>
+        </div>
         <div className="hero-main">
           <PageIntro
-            eyebrow="Recently Airing Curator"
+            eyebrow="Shinban Curator"
             title="지금 방영 중인 애니 중에서 네 취향에 맞는 작품만 먼저 고릅니다"
             description="최근 방영작과 직전 분기 화제작을 한 보드에 묶고, 무드 일치도와 초반 진입감, 계속 볼 만한 이유까지 함께 정리하는 개인 큐레이션 화면입니다."
             actions={
@@ -51,7 +55,10 @@ export default function HomePage() {
         </div>
 
         <aside className="featured-spotlight">
-          <div className="featured-label">Editor's pick for you</div>
+          <div className="featured-label">
+            <span className="stamp-badge">推し</span>
+            Editor&apos;s pick for you
+          </div>
           <h2>{featuredPick?.title}</h2>
           <p>{featuredPick?.reason}</p>
           <div className="spotlight-meta">
@@ -101,7 +108,10 @@ export default function HomePage() {
                         <div className="curation-rank">0{index + 1}</div>
                         <h3>{pick.title}</h3>
                       </div>
-                      <StatusBadge status={pick.confidence} />
+                      <div className="curation-side">
+                        <span className="mini-seal">{index === 0 ? "本命" : "注目"}</span>
+                        <StatusBadge status={pick.confidence} />
+                      </div>
                     </div>
                     <p>{pick.reason}</p>
                     <div className="curation-footer">
@@ -139,7 +149,16 @@ export default function HomePage() {
                 <li key={item.animeId}>
                   <div className="list-header">
                     <strong>{item.title}</strong>
-                    <StatusBadge status={item.status} />
+                    <div className="watch-status-wrap">
+                      <span className="watch-tag">
+                        {item.status === "watching"
+                          ? "視聴中"
+                          : item.status === "planned"
+                            ? "候補"
+                            : "保留"}
+                      </span>
+                      <StatusBadge status={item.status} />
+                    </div>
                   </div>
                   <span>{item.progressLabel}</span>
                   <span>{item.nextAction}</span>

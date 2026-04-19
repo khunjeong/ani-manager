@@ -11,7 +11,7 @@ export default function RecommendationsPage() {
   return (
     <main className="page-shell page-stack">
       <PageIntro
-        eyebrow="Recommendations"
+        eyebrow="Airing Selection"
         title="최근 방영작부터 먼저 보도록 정리한 개인화 추천 피드"
         description="현재 방영 중이거나 방영 직후 화제성이 남아 있는 작품 중 취향 일치율과 초반 진입감을 기준으로 정렬한 추천 피드입니다."
         align="compact"
@@ -30,7 +30,10 @@ export default function RecommendationsPage() {
               className={`recommendation-panel${index === 0 ? " recommendation-panel-lead" : ""}`}
             >
               <div className="recommendation-topline">
-                <div className="recommendation-index">0{index + 1}</div>
+                <div className="recommendation-index-wrap">
+                  <div className="recommendation-index">0{index + 1}</div>
+                  <span className="index-caption">{index === 0 ? "一推し" : "候補作"}</span>
+                </div>
                 <div className="list-header">
                   <StatusBadge status={pick.confidence} />
                   <span className="score-label">score {pick.score}</span>
