@@ -14,9 +14,10 @@ export default function RecommendationsPage() {
         eyebrow="Recommendations"
         title="최근 방영작부터 먼저 보도록 정리한 개인화 추천 피드"
         description="현재 방영 중이거나 방영 직후 화제성이 남아 있는 작품 중 취향 일치율과 초반 진입감을 기준으로 정렬한 추천 피드입니다."
+        align="compact"
       />
 
-      <section className="recommendation-stack">
+      <section className="recommendation-stack recommendation-editorial">
         {digest.picks.map((pick, index) => {
           const entry = lineup.entries.find((item) => item.metadata.id === pick.animeId);
           if (!entry) return null;
@@ -26,11 +27,14 @@ export default function RecommendationsPage() {
               key={pick.animeId}
               title={pick.title}
               kicker={index === 0 ? "Best match" : "Recommended"}
-              className="recommendation-panel"
+              className={`recommendation-panel${index === 0 ? " recommendation-panel-lead" : ""}`}
             >
-              <div className="list-header">
-                <StatusBadge status={pick.confidence} />
-                <span className="score-label">score {pick.score}</span>
+              <div className="recommendation-topline">
+                <div className="recommendation-index">0{index + 1}</div>
+                <div className="list-header">
+                  <StatusBadge status={pick.confidence} />
+                  <span className="score-label">score {pick.score}</span>
+                </div>
               </div>
               <p className="digest-summary">{pick.reason}</p>
               <ul className="chip-list">
@@ -41,7 +45,7 @@ export default function RecommendationsPage() {
                   <li key={tag}>{tag}</li>
                 ))}
               </ul>
-              <div className="meta-grid">
+              <div className="meta-grid recommendation-meta-grid">
                 <div>
                   <strong>최근성</strong>
                   <span>{entry.metadata.releaseWindowLabel}</span>

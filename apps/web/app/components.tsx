@@ -32,9 +32,10 @@ export function PageIntro(props: {
   title: string;
   description: string;
   actions?: ReactNode;
+  align?: "default" | "compact";
 }) {
   return (
-    <section className="page-intro">
+    <section className={`page-intro${props.align === "compact" ? " page-intro-compact" : ""}`}>
       <div className="eyebrow">{props.eyebrow}</div>
       <h1>{props.title}</h1>
       <p>{props.description}</p>

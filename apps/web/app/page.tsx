@@ -18,93 +18,153 @@ const watchlist = buildWatchlist({ catalog: lineup, digest });
 const weeklyDigest = buildWeeklyDigest({ profile, digest, watchlist });
 
 export default function HomePage() {
+  const featuredPick = digest.picks[0];
+  const featuredEntry = lineup.entries.find((entry) => entry.metadata.id === featuredPick?.animeId);
+  const watchNowCount = digest.watchlistActions.filter((action) => action.action === "watch-now").length;
+
   return (
-    <main className="page-shell">
-      <section className="hero">
-        <PageIntro
-          eyebrow="AI Anime Taste Manager"
-          title="최근 방영 중인 애니 위주로 지금 볼 만한 작품을 이유와 함께 골라주는 개인 취향 매니저"
-          description="온보딩에서 취향 신호를 수집하고, 최근 방영작과 직전 분기 화제작을 정규화한 뒤, 추천 이유와 계속 볼지 판단할 포인트까지 한 흐름으로 묶었습니다."
-          actions={
-            <>
-              <Link href="/onboarding" className="primary-link">
-                취향 온보딩 보기
-              </Link>
-              <Link href="/recommendations" className="secondary-link">
-                추천 피드 보기
-              </Link>
-            </>
-          }
-        />
-        <div className="hero-grid">
-          <article className="stat-card">
-            <span>온보딩 신호</span>
-            <strong>{profile.preferenceSignals.length}개</strong>
-            <p>작품, 캐릭터, 연출, 감정선 선호를 구조화</p>
-          </article>
-          <article className="stat-card">
-            <span>최근 방영 후보</span>
-            <strong>{lineup.entries.length}개</strong>
-            <p>현재 방영작과 직전 분기 주목작 중심으로 정리한 추천 후보</p>
-          </article>
-          <article className="stat-card">
-            <span>즉시 액션</span>
-            <strong>{digest.watchlistActions.length}개</strong>
-            <p>바로 보기, 3화까지 보기, 보류까지 추천 후 행동 제안</p>
-          </article>
+    <main className="page-shell home-shell">
+      <section className="hero hero-editorial">
+        <div className="hero-main">
+          <PageIntro
+            eyebrow="Recently Airing Curator"
+            title="지금 방영 중인 애니 중에서 네 취향에 맞는 작품만 먼저 고릅니다"
+            description="최근 방영작과 직전 분기 화제작을 한 보드에 묶고, 무드 일치도와 초반 진입감, 계속 볼 만한 이유까지 함께 정리하는 개인 큐레이션 화면입니다."
+            actions={
+              <>
+                <Link href="/recommendations" className="primary-link">
+                  오늘의 큐레이션 보기
+                </Link>
+                <Link href="/onboarding" className="secondary-link">
+                  취향 다시 조정하기
+                </Link>
+              </>
+            }
+          />
+
+          <div className="hero-marquee">
+            <span>Currently airing</span>
+            <span>{featuredEntry?.metadata.releaseWindowLabel}</span>
+            <span>{featuredEntry?.metadata.releaseSchedule}</span>
+            <span>{featuredEntry?.metadata.streamingProviders.join(" / ")}</span>
+          </div>
         </div>
+
+        <aside className="featured-spotlight">
+          <div className="featured-label">Editor's pick for you</div>
+          <h2>{featuredPick?.title}</h2>
+          <p>{featuredPick?.reason}</p>
+          <div className="spotlight-meta">
+            <div>
+              <span>최근성</span>
+              <strong>{featuredEntry?.metadata.releaseWindowLabel}</strong>
+            </div>
+            <div>
+              <span>입문감</span>
+              <strong>{featuredEntry?.onboardingVerdict.firstThreeEpisodeFit}</strong>
+            </div>
+          </div>
+          <Link href={featuredPick ? `/titles/${featuredPick.animeId}` : "/recommendations"} className="primary-link">
+            이 작품 자세히 보기
+          </Link>
+        </aside>
       </section>
 
-      <section className="content-grid">
-        <Panel title="최근 방영작 추천" kicker="Top picks">
-          <ul className="plain-list">
-            {digest.picks.map((pick) => (
-              <li key={pick.animeId}>
-                <div className="list-header">
-                  <strong>{pick.title}</strong>
-                  <StatusBadge status={pick.confidence} />
-                </div>
-                <span>{pick.reason}</span>
-                <span className="support-copy">
-                  {
-                    lineup.entries.find((entry) => entry.metadata.id === pick.animeId)?.metadata
-                      .releaseWindowLabel
-                  }
-                </span>
-                <Link href={`/titles/${pick.animeId}`} className="inline-link">
-                  작품 상세 보기
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </Panel>
+      <section className="dashboard-ribbon">
+        <article className="ribbon-card">
+          <span>온보딩 신호</span>
+          <strong>{profile.preferenceSignals.length}개</strong>
+          <p>캐릭터, 무드, 연출 취향을 압축해 사용합니다.</p>
+        </article>
+        <article className="ribbon-card">
+          <span>최근 방영 후보</span>
+          <strong>{lineup.entries.length}개</strong>
+          <p>방영 중 작품과 직전 분기 화제작을 함께 큐레이션합니다.</p>
+        </article>
+        <article className="ribbon-card ribbon-card-accent">
+          <span>오늘 바로 볼 작품</span>
+          <strong>{watchNowCount}개</strong>
+          <p>지금 시작해도 좋은 작품만 따로 골라둡니다.</p>
+        </article>
+      </section>
 
-        <Panel title="워치보드 미리보기" kicker="Watch status">
-          <ul className="plain-list">
-            {watchlist.map((item) => (
-              <li key={item.animeId}>
-                <div className="list-header">
-                  <strong>{item.title}</strong>
-                  <StatusBadge status={item.status} />
-                </div>
-                <span>{item.progressLabel}</span>
-                <span>{item.nextAction}</span>
-              </li>
-            ))}
-          </ul>
-        </Panel>
+      <section className="home-columns">
+        <div className="home-primary">
+          <Panel title="오늘의 큐레이션" kicker="Recent picks" className="panel-featured">
+            <div className="curation-stack">
+              {digest.picks.map((pick, index) => {
+                const entry = lineup.entries.find((item) => item.metadata.id === pick.animeId);
+                return (
+                  <article key={pick.animeId} className={`curation-card${index === 0 ? " curation-card-lead" : ""}`}>
+                    <div className="curation-head">
+                      <div>
+                        <div className="curation-rank">0{index + 1}</div>
+                        <h3>{pick.title}</h3>
+                      </div>
+                      <StatusBadge status={pick.confidence} />
+                    </div>
+                    <p>{pick.reason}</p>
+                    <div className="curation-footer">
+                      <span>{entry?.metadata.releaseWindowLabel}</span>
+                      <span>{entry?.metadata.releaseSchedule}</span>
+                    </div>
+                    <Link href={`/titles/${pick.animeId}`} className="inline-link">
+                      작품 상세 보기
+                    </Link>
+                  </article>
+                );
+              })}
+            </div>
+          </Panel>
 
-        <Panel title="주간 다이제스트" kicker="Weekly digest">
-          <p className="digest-summary">{weeklyDigest.headline}</p>
-          <ul className="plain-list">
-            {weeklyDigest.sections.map((section) => (
-              <li key={section.title}>
-                <strong>{section.title}</strong>
-                <span>{section.summary}</span>
+          <Panel title="이번 주 다이제스트" kicker="Digest" className="panel-digest">
+            <div className="digest-grid">
+              <div className="digest-lead">
+                <p className="digest-summary">{weeklyDigest.headline}</p>
+              </div>
+              {weeklyDigest.sections.map((section) => (
+                <div key={section.title} className="digest-mini-card">
+                  <strong>{section.title}</strong>
+                  <span>{section.summary}</span>
+                </div>
+              ))}
+            </div>
+          </Panel>
+        </div>
+
+        <aside className="home-secondary">
+          <Panel title="워치보드 미리보기" kicker="Now tracking" className="panel-compact">
+            <ul className="plain-list">
+              {watchlist.map((item) => (
+                <li key={item.animeId}>
+                  <div className="list-header">
+                    <strong>{item.title}</strong>
+                    <StatusBadge status={item.status} />
+                  </div>
+                  <span>{item.progressLabel}</span>
+                  <span>{item.nextAction}</span>
+                </li>
+              ))}
+            </ul>
+          </Panel>
+
+          <Panel title="추천 엔진 기준" kicker="How it thinks" className="panel-compact">
+            <ul className="plain-list">
+              <li>
+                <strong>최근 방영 우선</strong>
+                <span>지금 바로 볼 수 있는 작품을 먼저 올립니다.</span>
               </li>
-            ))}
-          </ul>
-        </Panel>
+              <li>
+                <strong>초반 진입감</strong>
+                <span>1~3화 안에 취향이 맞는지 판단 가능한 작품을 우대합니다.</span>
+              </li>
+              <li>
+                <strong>설명 가능한 추천</strong>
+                <span>무드, 관계성, 감정선 기준을 문장으로 보여줍니다.</span>
+              </li>
+            </ul>
+          </Panel>
+        </aside>
       </section>
     </main>
   );
