@@ -13,6 +13,7 @@ AI 애니 취향 매니저를 위한 범용 하네스 엔지니어링 구조입�
 - `docs/architecture.md`: 왜 이렇게 분리했는지에 대한 구조 문서
 - `docs/product/*`: 제품 기획, MVP 범위, 로드맵, 기술 방향 문서
 - `docs/design/*`: UX 구조, 화면 목록, 비주얼 시스템 문서
+- `docs/ops/deployment.md`: 배포와 운영 체크리스트
 
 ## Why this harness is reusable
 
@@ -46,3 +47,4 @@ pnpm dev
 - [UX Blueprint](./docs/design/ux-blueprint.md)
 - [Visual System](./docs/design/visual-system.md)
 - [Screen Inventory](./docs/design/screen-inventory.md)
+- [Deployment Guide](./docs/ops/deployment.md)
