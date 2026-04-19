@@ -10,10 +10,11 @@
 - 선호하는 분위기/연출/관계성 선택
 - 직접 입력 메모 수집
 
-### 2. Seasonal recommendation feed
+### 2. Recently airing recommendation feed
 
-- 이번 시즌 작품 리스트 제공
+- 최근 방영작 리스트 제공
 - 취향 적합도 기반 추천 순위 계산
+- 현재 방영작 우선 가중치 적용
 - 추천 이유 문장 생성
 - 입문 평가 요약 제공
 

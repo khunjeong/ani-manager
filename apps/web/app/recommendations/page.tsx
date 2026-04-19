@@ -12,8 +12,8 @@ export default function RecommendationsPage() {
     <main className="page-shell page-stack">
       <PageIntro
         eyebrow="Recommendations"
-        title="추천은 점수보다 이유가 먼저 보이도록 정리합니다"
-        description="이번 시즌 후보 중 취향 일치율과 초반 진입감을 기준으로 정렬한 추천 피드입니다."
+        title="최근 방영작부터 먼저 보도록 정리한 개인화 추천 피드"
+        description="현재 방영 중이거나 방영 직후 화제성이 남아 있는 작품 중 취향 일치율과 초반 진입감을 기준으로 정렬한 추천 피드입니다."
       />
 
       <section className="recommendation-stack">
@@ -42,6 +42,10 @@ export default function RecommendationsPage() {
                 ))}
               </ul>
               <div className="meta-grid">
+                <div>
+                  <strong>최근성</strong>
+                  <span>{entry.metadata.releaseWindowLabel}</span>
+                </div>
                 <div>
                   <strong>입문 평가</strong>
                   <span>{entry.onboardingVerdict.summary}</span>

@@ -23,8 +23,8 @@ export default function HomePage() {
       <section className="hero">
         <PageIntro
           eyebrow="AI Anime Taste Manager"
-          title="이번 시즌에 네가 볼 만한 작품을 이유와 함께 골라주는 개인 취향 매니저"
-          description="온보딩에서 취향 신호를 수집하고, 시즌 카탈로그를 정규화한 뒤, 추천 이유와 계속 볼지 판단할 포인트까지 한 흐름으로 묶었습니다."
+          title="최근 방영 중인 애니 위주로 지금 볼 만한 작품을 이유와 함께 골라주는 개인 취향 매니저"
+          description="온보딩에서 취향 신호를 수집하고, 최근 방영작과 직전 분기 화제작을 정규화한 뒤, 추천 이유와 계속 볼지 판단할 포인트까지 한 흐름으로 묶었습니다."
           actions={
             <>
               <Link href="/onboarding" className="primary-link">
@@ -43,9 +43,9 @@ export default function HomePage() {
             <p>작품, 캐릭터, 연출, 감정선 선호를 구조화</p>
           </article>
           <article className="stat-card">
-            <span>시즌 후보</span>
+            <span>최근 방영 후보</span>
             <strong>{lineup.entries.length}개</strong>
-            <p>메타데이터와 분위기 태그가 정규화된 추천 후보</p>
+            <p>현재 방영작과 직전 분기 주목작 중심으로 정리한 추천 후보</p>
           </article>
           <article className="stat-card">
             <span>즉시 액션</span>
@@ -56,7 +56,7 @@ export default function HomePage() {
       </section>
 
       <section className="content-grid">
-        <Panel title="이번 주 추천" kicker="Top picks">
+        <Panel title="최근 방영작 추천" kicker="Top picks">
           <ul className="plain-list">
             {digest.picks.map((pick) => (
               <li key={pick.animeId}>
@@ -65,6 +65,12 @@ export default function HomePage() {
                   <StatusBadge status={pick.confidence} />
                 </div>
                 <span>{pick.reason}</span>
+                <span className="support-copy">
+                  {
+                    lineup.entries.find((entry) => entry.metadata.id === pick.animeId)?.metadata
+                      .releaseWindowLabel
+                  }
+                </span>
                 <Link href={`/titles/${pick.animeId}`} className="inline-link">
                   작품 상세 보기
                 </Link>

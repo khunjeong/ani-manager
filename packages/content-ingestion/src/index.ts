@@ -13,6 +13,8 @@ export function buildSeasonLineup(): { season: string; entries: AnimeCatalogEntr
           },
           season: "SPRING",
           year: 2026,
+          airingStatus: "currently-airing",
+          releaseWindowLabel: "이번 주 방영작",
           synopsis:
             "비를 계기로 다시 만나게 된 두 친구가 작은 섬 마을에서 서로의 시간을 복원해가는 드라마.",
           studios: ["Lantern Works"],
@@ -43,6 +45,8 @@ export function buildSeasonLineup(): { season: string; entries: AnimeCatalogEntr
           },
           season: "SPRING",
           year: 2026,
+          airingStatus: "currently-airing",
+          releaseWindowLabel: "방영 2주차",
           synopsis:
             "우주 정거장 실습생들이 팀을 이루며 서로의 결핍을 메워가는 청춘 앙상블.",
           studios: ["North Pier"],
@@ -73,6 +77,8 @@ export function buildSeasonLineup(): { season: string; entries: AnimeCatalogEntr
           },
           season: "SPRING",
           year: 2026,
+          airingStatus: "recently-finished",
+          releaseWindowLabel: "직전 분기 화제작",
           synopsis:
             "천재 연주자 둘의 경쟁과 공명이 예민한 연출로 전개되는 음악 심리극.",
           studios: ["Blue Stage"],

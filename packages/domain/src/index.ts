@@ -30,6 +30,8 @@ export interface AnimeMetadata {
   title: AnimeTitle;
   season: string;
   year: number;
+  airingStatus: "currently-airing" | "recently-finished" | "upcoming";
+  releaseWindowLabel: string;
   synopsis: string;
   studios: string[];
   genres: string[];
@@ -99,8 +101,8 @@ export interface RecommendationDigest {
   watchlistActions: Array<{
     animeId: string;
     action: "watch-now" | "sample-3-episodes" | "hold";
-      note: string;
-    }>;
+    note: string;
+  }>;
 }
 
 export interface WatchlistItem {

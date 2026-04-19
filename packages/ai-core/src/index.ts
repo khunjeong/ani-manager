@@ -107,8 +107,22 @@ function scoreEntry(profile: UserTasteProfile, entry: AnimeCatalogEntry): number
         ? 0.7
         : 0.2;
 
+  const freshnessBonus =
+    entry.metadata.airingStatus === "currently-airing"
+      ? 0.9
+      : entry.metadata.airingStatus === "recently-finished"
+        ? 0.55
+        : 0.15;
+
   return Number(
-    (toneScore + relationshipScore + emotionScore + pacingScore + onboardingBonus).toFixed(2)
+    (
+      toneScore +
+      relationshipScore +
+      emotionScore +
+      pacingScore +
+      onboardingBonus +
+      freshnessBonus
+    ).toFixed(2)
   );
 }
 
@@ -166,7 +180,7 @@ export function buildRecommendationDigest(input: {
 
   return {
     generatedAt: new Date().toISOString(),
-    summary: `${input.profile.displayName}님은 감정선이 안정적으로 쌓이고 관계성이 선명한 작품에 강한 반응을 보입니다. 이번 시즌에는 무드 일치와 초반 진입감이 좋은 작품을 우선 추천합니다.`,
+    summary: `${input.profile.displayName}님은 감정선이 안정적으로 쌓이고 관계성이 선명한 작품에 강한 반응을 보입니다. 최근 방영 중인 작품 가운데 무드 일치와 초반 진입감이 좋은 작품을 우선 추천합니다.`,
     picks,
     watchlistActions: picks.map((pick, index) => ({
       animeId: pick.animeId,
