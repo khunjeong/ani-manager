@@ -97,3 +97,7 @@ export function buildSeasonLineup(): { season: string; entries: AnimeCatalogEntr
     ]
   };
 }
+
+export function getCatalogEntryById(id: string): AnimeCatalogEntry | undefined {
+  return buildSeasonLineup().entries.find((entry) => entry.metadata.id === id);
+}

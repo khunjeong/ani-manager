@@ -75,6 +75,14 @@ export interface UserTasteProfile {
   preferredEmotions: EmotionTag[];
 }
 
+export interface OnboardingSnapshot {
+  likedTitles: string[];
+  dislikedTitles: string[];
+  favoriteCharacters: string[];
+  preferredDirectingNotes: string[];
+  freeformNotes: string;
+}
+
 export interface RecommendationPick {
   animeId: string;
   title: string;
@@ -91,6 +99,27 @@ export interface RecommendationDigest {
   watchlistActions: Array<{
     animeId: string;
     action: "watch-now" | "sample-3-episodes" | "hold";
-    note: string;
-  }>;
+      note: string;
+    }>;
+}
+
+export interface WatchlistItem {
+  animeId: string;
+  title: string;
+  status: ViewingStatus;
+  progressLabel: string;
+  nextAction: string;
+  reason: string;
+}
+
+export interface WeeklyDigestSection {
+  title: string;
+  summary: string;
+  items: string[];
+}
+
+export interface WeeklyDigest {
+  generatedAt: string;
+  headline: string;
+  sections: WeeklyDigestSection[];
 }

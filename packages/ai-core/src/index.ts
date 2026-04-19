@@ -1,10 +1,13 @@
 import type {
   AnimeCatalogEntry,
   EmotionTag,
+  OnboardingSnapshot,
   RecommendationDigest,
   RecommendationPick,
   RelationshipTag,
   ToneTag,
+  WatchlistItem,
+  WeeklyDigest,
   UserTasteProfile
 } from "@ani-manager/domain";
 
@@ -63,6 +66,20 @@ export function createSampleProfile(): UserTasteProfile {
     preferredRelationships: ["found-family", "slow-burn", "mentor-student"],
     preferredPacing: ["steady", "meditative"],
     preferredEmotions: ["comfort", "wonder", "catharsis"]
+  };
+}
+
+export function createSampleOnboardingSnapshot(): OnboardingSnapshot {
+  return {
+    likedTitles: ["Sousou no Frieren", "Skip and Loafer", "Mob Psycho 100"],
+    dislikedTitles: ["극단적으로 자극적인 데스게임물"],
+    favoriteCharacters: ["프리렌", "레이겐", "미츠미"],
+    preferredDirectingNotes: [
+      "감정선이 천천히 쌓이는 연출",
+      "캐릭터 사이 공기감이 살아 있는 장면",
+      "과장보다 여운이 남는 엔딩"
+    ],
+    freeformNotes: "잔잔하지만 멍하지 않고, 초반에 관계성이 보이는 작품을 선호합니다."
   };
 }
 
@@ -156,5 +173,67 @@ export function buildRecommendationDigest(input: {
       action: index === 0 ? "watch-now" : index === 1 ? "sample-3-episodes" : "hold",
       note: pick.continueWatchingHint
     }))
+  };
+}
+
+export function buildWatchlist(input: {
+  catalog: { entries: AnimeCatalogEntry[] };
+  digest: RecommendationDigest;
+}): WatchlistItem[] {
+  const actionById = new Map(input.digest.watchlistActions.map((action) => [action.animeId, action]));
+
+  return input.catalog.entries.map((entry, index) => {
+    const action = actionById.get(entry.metadata.id);
+    const baseStatus: WatchlistItem["status"] =
+      index === 0 ? "watching" : index === 1 ? "planned" : "paused";
+
+    return {
+      animeId: entry.metadata.id,
+      title: entry.metadata.title.english ?? entry.metadata.title.romaji,
+      status: baseStatus,
+      progressLabel:
+        baseStatus === "watching"
+          ? "1화 시작"
+          : baseStatus === "planned"
+            ? "이번 주 후보"
+            : "재평가 대기",
+      nextAction: action?.action === "watch-now" ? "오늘 시작" : action?.action === "sample-3-episodes" ? "3화까지 체크" : "보류 유지",
+      reason: action?.note ?? entry.onboardingVerdict.summary
+    };
+  });
+}
+
+export function buildWeeklyDigest(input: {
+  profile: UserTasteProfile;
+  digest: RecommendationDigest;
+  watchlist: WatchlistItem[];
+}): WeeklyDigest {
+  const topPick = input.digest.picks[0];
+  const watching = input.watchlist.filter((item) => item.status === "watching");
+  const paused = input.watchlist.filter((item) => item.status === "paused");
+
+  return {
+    generatedAt: new Date().toISOString(),
+    headline: `${input.profile.displayName}님, 이번 주는 ${topPick?.title ?? "추천작"}부터 시작해보면 좋겠습니다.`,
+    sections: [
+      {
+        title: "이번 주 추천",
+        summary: "취향 일치율과 초반 진입감이 좋은 작품을 우선 정리했습니다.",
+        items: input.digest.picks.map((pick) => `${pick.title}: ${pick.reason}`)
+      },
+      {
+        title: "계속 볼 작품",
+        summary: "바로 포기하기보다 다음 판단 포인트가 남아 있는 작품들입니다.",
+        items: watching.map((item) => `${item.title}: ${item.reason}`)
+      },
+      {
+        title: "다시 볼 후보",
+        summary: "보류 상태지만 감정선이나 관계성이 뒤늦게 맞을 수 있는 후보입니다.",
+        items:
+          paused.length > 0
+            ? paused.map((item) => `${item.title}: ${item.nextAction}`)
+            : ["이번 주에는 별도 보류 후보가 없습니다."]
+      }
+    ]
   };
 }
